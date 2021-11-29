@@ -3,8 +3,7 @@ import random
 from collections import Counter
 
 turn_not_over = True
-
-
+#FIXME: #Bug in bank_points add wrong numbers 
 # print("lizzy-branch") #lizzy-branch!
 
 
@@ -26,91 +25,77 @@ dice = []
 # FIXME: fix total score to add correct score for user
 # TODO: Add banker class
 # TODO: Add rounds left for user
+global final_points
+final_points = 0
+
 
 total_points = int(16)
 class GameLogic:
-    def __init__(self):
-        self.rounds_left = 6
+    def __init__(self, total_points):
+        self.total_points = total_points
+        
         
 
     # tuple of integers passed in here.
     def calculate_score(self, *user_array):
-        
-        total_score = 0
+        # final_points = 20
+        total_points = 0
         number_count = Counter(*user_array)
         for num, count in number_count.items():
             # print(num, count)
             if num == 5 and count < 6:
-                total_score += count * 50
+                total_points += count * 50
                 # print("I am running!")
 
                 # print(self.total_points)
             elif num == 1 and count < 6:
-                total_score += count * 100
+                total_points += count * 100
                 # print("I am running!")
 
             elif num == 4:
-                total_score += 1 * 1000    # print(self.total_points)
+                total_points += 1 * 1000    # print(self.total_points)
                 # print("I am running!")
 
             elif count == 5:
-                total_score += 1 * 2000
+                total_points += 1 * 2000
                 # print("I am running!")
 
             elif count == 6:
-               total_score += 1 * 3000
+               total_points += 1 * 3000
                 # print("I am running!")
         #  self.total_points += die_score
-        print(f" Your score is being calculated...\n > {total_score}")
-        
-        
-        
-        
-    # def number_validation(self, random_dice, user_arr):
+        # total_score += total_score
+        print(f" Your score is being calculated...\n > {total_points}")
+        # final_points += total_score
+
+#     Handle banking points
+# Define a Banker class
+class Banker(GameLogic):
+    def __init__(self):
+        super().__init__(total_points)
+        self.banked_points = 0
        
-    #     print("\n\n\n")
-    #     print(random_dice)
-    #     print(user_arr)
-    #     print(self.total_points)
-
         
-        
-        # self.calculate_score(*user_arr)
-        # # TODO: 1. we want to both arrays and step through them.
-        # new_list = list(set(dices).intersection(user_arr))
-        # print(new_list)
-        # count_number = Counter([*new_list])
-        # for arr, count in count_number.items():
-        #     # FIXME: We have the matches, how can we ensure the count of values?
-        #     print(arr, count)
+    
+    def bank(self):
+        # self.total_points += self.banked_points
+        self.banked_points += self.total_score
+        print(self.banked_points)
+        print(self.total_points)
+        # return self.banked_points
 
-        # count_random_numbers = Counter([*dices])
-        # for arr, count in count_random_numbers.items():
-        #     random_nums = {arr:count}
+# Add a shelf instance method
+# Input to shelf is the amount of points (integer) to add to shelf.
+# shelf should temporarily store unbanked points.
+# Add a bank instance method
+# bank should add any points on the shelf to total and reset shelf to 0.
+# bank output should be the amount of points added to total from shelf.
+# Add a clear_shelf instance method
+# clear_shelf should remove all unbanked points.    
 
-        # count_user_arr_numbers = Counter([*user_arr])
-        # for arr, count in count_user_arr_numbers.items():
-        #         print(arr, count)
-
-        # Lookup: map: key/value pairs
-
-        # TODO: 2. We want to check if the numbers from the user matches with the numbers and the count of numbers of the random array
-        # TODO: 3 If True, continue with scoring / If False, then return an error
-
-
-gamelogic = GameLogic()
-# game_one.calculate_score()
-
-# 3. If the user has a 1 or 5 in list of 6, continue as follows:
-# 1 -100 points
-# 5 - 50 points
-# score is added to current score list
-# 3B. else if user has triples, quadruples, quintuples, or sextuplets of any other values ranging from 1-6 --> add appropiate score to user score list.
-# Jerrod- we're gonna need a scorekeeper.
-
-# 6. On 6th roll of dice, if user has either a 1 or 5 on dice roll, The user can roll again with points accumulated / If user does NOT get 1 or 5,
-# ALL points not banked (saved) are lost and game ends (YOU LOST).
-# 7. User input if game lost: " GAME OVER. Would you like to play again?" ---> If user types yes, start game over / if user types no, give total score of banked points (if any).
+gamelogic = GameLogic(0)
+bankedpoints = Banker()
+# bankedpoints.bank(gamelogic.total_score)
 
 # ------------- Bank (save) points -------------------
 # 8. Input: User is asked if they want to bank the points or reroll the dice
